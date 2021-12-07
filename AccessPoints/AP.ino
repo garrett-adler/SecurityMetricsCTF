@@ -3,6 +3,7 @@
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
 #include "config.h"
+#include "LED.h"
 
 ESP8266WebServer server(80);
 
@@ -19,6 +20,8 @@ ESP8266WebServer server(80);
   server.send(200, "text/html", html);
   Serial.println("server handlroot executed");
  }
+
+LED led;
 
 void setup() {
   // put your setup code here, to run once:
@@ -58,6 +61,24 @@ void setup() {
   server.begin();
   Serial.println("HTTP server started");
   delay(100);
+
+  led.begin();
+
+  //Set LEDs Green=Easy, Blue=Medium, Red=Hard
+  switch (LEVEL) {
+    case 0:
+      led.setColor(0,1,0);
+      break;
+    case 1:
+      led.setColor(0,0,1);
+      break;
+    case 2:
+      led.setColor(1,0,0);
+      break;
+    default:
+      led.setColor(0,0,0);
+      break;
+  }
 }
 
 void loop(void) {
